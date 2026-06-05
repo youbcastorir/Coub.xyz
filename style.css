@@ -1072,3 +1072,121 @@ ul { list-style: none; }
 [dir="rtl"] .drawer { left: auto; right: 0; border-right: none; border-left: 1px solid var(--border); }
 [dir="rtl"] .reel-actions { right: auto; left: 16px; }
 [dir="rtl"] .reel-info { left: 80px; right: 16px; }
+
+/* ============================================================
+   VIDEO PLAYER FIXES — v2
+   ============================================================ */
+
+/* Video wrap inside reel card */
+.reel-video-wrap {
+  position: absolute; inset: 0; z-index: 1;
+  overflow: hidden;
+  background: transparent;
+}
+.reel-video-wrap iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: none;
+  pointer-events: none; /* allow touch-through to card actions */
+}
+
+/* TAP TO WATCH overlay */
+.reel-tap-overlay {
+  position: absolute; inset: 0; z-index: 7;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px;
+  background: rgba(0,0,0,0.35);
+  cursor: pointer;
+  transition: opacity 0.4s;
+}
+.reel-tap-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.tap-play-btn {
+  width: 72px; height: 72px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(255,255,255,0.3);
+  animation: tapPulse 2s ease infinite;
+}
+@keyframes tapPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+  50%       { transform: scale(1.06); box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+}
+.tap-label {
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+}
+
+/* Channel page video hero */
+.ch-hero {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.ch-hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: none;
+  z-index: 0;
+  pointer-events: auto;
+}
+.ch-hero-emoji {
+  font-size: 80px;
+  z-index: 1;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+}
+.ch-hero-gradient {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 100px;
+  background: linear-gradient(to top, var(--bg), transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+.ch-back {
+  position: absolute; top: 14px; left: 14px; z-index: 10;
+  width: 40px; height: 40px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: none; color: #fff; cursor: pointer;
+  transition: transform 0.15s;
+}
+.ch-back:active { transform: scale(0.9); }
+
+/* Fix reel card stacking — make sure overlays sit above video */
+.reel-live-badge { z-index: 8; }
+.reel-mute       { z-index: 9; }
+.reel-actions    { z-index: 9; }
+.reel-info       { z-index: 8; }
+.reel-card::before { z-index: 4; }  /* gradient overlay above video */
+.reel-card::after  { z-index: 4; }
+
+/* Reel bg sits behind video */
+.reel-bg { z-index: 0; }
+
+/* When video is loaded, fade out the bg emoji */
+.reel-video-wrap[data-loaded] ~ .reel-bg .reel-emoji {
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+
+/* Mute button active state */
+.reel-mute.unmuted {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Smooth card entrance */
+.reel-card {
+  animation: none; /* disable previous animation, handled per card */
+}
