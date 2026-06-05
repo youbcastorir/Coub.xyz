@@ -1190,3 +1190,131 @@ ul { list-style: none; }
 .reel-card {
   animation: none; /* disable previous animation, handled per card */
 }
+
+/* ============================================================
+   v3 FIXES — HLS Player + WC2026 Badges + Spinner
+   ============================================================ */
+
+/* Video wrap */
+.reel-video-wrap {
+  position: absolute; inset: 0; z-index: 1;
+  overflow: hidden;
+}
+.reel-video-wrap video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; z-index: 1;
+  background: #000;
+}
+
+/* Gradient overlays sit above video */
+.reel-card::before { z-index: 3 !important; }
+.reel-card::after  { z-index: 3 !important; }
+.reel-bg           { z-index: 0; }
+.reel-live-badge   { z-index: 8; }
+.reel-mute         { z-index: 9; }
+.reel-actions      { z-index: 9; }
+.reel-info         { z-index: 8; }
+
+/* WC2026 badge on reel card */
+.reel-wc-badge {
+  position: absolute; top: 16px; left: 90px; z-index: 8;
+  background: linear-gradient(90deg, #c8a600, #ffd700);
+  color: #000;
+  font-size: 11px; font-weight: 800;
+  padding: 4px 10px; border-radius: 6px;
+  letter-spacing: 0.06em;
+}
+
+/* WC2026 badge on directory card */
+.dir-card-wc-badge {
+  position: absolute; bottom: 6px; right: 6px;
+  background: #ffd700; color: #000;
+  font-size: 9px; font-weight: 800;
+  padding: 2px 6px; border-radius: 4px;
+}
+
+/* Sports card WC label */
+.sports-card-wc {
+  margin-top: 6px;
+  font-size: 11px; font-weight: 700;
+  color: #ffd700;
+  letter-spacing: 0.06em;
+}
+
+/* Ch-tag for WC and live */
+.ch-tag.wc { background: rgba(200,166,0,0.2); color: #ffd700; border-color: rgba(200,166,0,0.3); }
+.ch-tag.live { background: var(--live); border-color: var(--live); color: #fff; }
+
+/* TAP OVERLAY */
+.reel-tap-overlay {
+  position: absolute; inset: 0; z-index: 7;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  background: rgba(0,0,0,0.45);
+  transition: opacity 0.5s;
+}
+.tap-play-btn {
+  width: 68px; height: 68px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(255,255,255,0.25);
+  animation: tapPulse 2s ease infinite;
+}
+@keyframes tapPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.15); }
+  50%     { transform: scale(1.07); box-shadow: 0 0 0 14px rgba(255,255,255,0); }
+}
+.tap-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); letter-spacing: 0.06em; }
+
+/* SPINNER */
+.tap-spinner {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.spinner-ring {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-label { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+/* Channel page hero */
+.ch-hero {
+  position: relative; height: 240px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.ch-hero-video-wrap {
+  position: absolute; inset: 0; z-index: 1;
+  overflow: hidden;
+}
+.ch-hero-video-wrap video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.ch-hero-emoji {
+  font-size: 72px; z-index: 2;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+}
+.ch-hero-gradient {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(to top, var(--bg), transparent);
+  z-index: 3; pointer-events: none;
+}
+.ch-back {
+  position: absolute; top: 14px; left: 14px; z-index: 10;
+  width: 40px; height: 40px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: none; color: #fff; cursor: pointer;
+}
+.ch-loading {
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+}

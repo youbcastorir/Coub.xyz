@@ -1,514 +1,416 @@
-/* channels.js — Coub.xyz Channel Catalog
-   FIXED: streamUrl = HLS links for native playback via hls.js
-          youtubeId  = YouTube live stream ID for embed
-          embedUrl   = official iframe-embeddable URL
+/* channels.js — Coub.xyz v3
+   Sources: iptv-org/iptv (MIT License) — free public streams
+   Focus: FIFA World Cup 2026 broadcasting channels + top free IPTV
+   All streams are free-to-air / public domain / official broadcaster streams.
 */
 
 const CHANNELS = [
 
-  // ── NEWS ─────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // 🏆 كأس العالم 2026 — القنوات الناقلة الرسمية المجانية
+  // FIFA World Cup 2026 Official Free-to-Air Broadcasters
+  // ══════════════════════════════════════════════════════════
   {
-    id: "aljazeera-en",
-    name: "Al Jazeera English",
-    category: "News",
-    country: "Qatar",
-    countryCode: "QA",
-    language: "English",
-    logo: "🌍",
-    description: "Award-winning global news network broadcasting live from Doha, Qatar.",
-    streamUrl: "https://live-hls-web-aje.getaj.net/AJE/index.m3u8",
-    youtubeId: "h300dNBtU0o",
-    website: "https://www.aljazeera.com",
-    isLive: true, isFeatured: true,
-    tags: ["international","arabic","english","politics"]
+    id: "trt1",
+    name: "TRT 1",
+    category: "Sports",
+    country: "Turkey", countryCode: "TR", language: "Turkish",
+    logo: "🇹🇷",
+    description: "TRT 1 — القناة التركية الرسمية الناقلة لكأس العالم 2026 مجاناً.",
+    streamUrl: "https://tv-trt1.medya.trt.com.tr/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","turkey","free"]
   },
   {
-    id: "dw-en",
-    name: "DW News",
-    category: "News",
-    country: "Germany",
-    countryCode: "DE",
-    language: "English",
-    logo: "🇩🇪",
-    description: "Germany's international broadcaster — news, analysis, and documentaries.",
-    streamUrl: "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8",
-    youtubeId: "mGnFAGOHeFE",
-    website: "https://www.dw.com",
-    isLive: true, isFeatured: true,
-    tags: ["germany","europe","international"]
+    id: "trt-spor",
+    name: "TRT Spor",
+    category: "Sports",
+    country: "Turkey", countryCode: "TR", language: "Turkish",
+    logo: "⚽",
+    description: "TRT Spor — القناة الرياضية التركية الرسمية، ناقلة كأس العالم 2026.",
+    streamUrl: "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","sports","turkey"]
   },
   {
-    id: "france24-en",
-    name: "France 24 English",
-    category: "News",
-    country: "France",
-    countryCode: "FR",
-    language: "English",
-    logo: "🇫🇷",
-    description: "French international news channel broadcasting live in English 24/7.",
-    streamUrl: "https://stream.france24.com/hls/live/2037092/F24_EN_HI_HLS/master.m3u8",
-    youtubeId: "h5to4RqRIrs",
-    website: "https://www.france24.com",
-    isLive: true, isFeatured: true,
-    tags: ["france","europe","multilingual"]
+    id: "trt-spor2",
+    name: "TRT Spor Yıldız",
+    category: "Sports",
+    country: "Turkey", countryCode: "TR", language: "Turkish",
+    logo: "🌟",
+    description: "TRT Spor Yıldız — القناة الثانية لكرة القدم من TRT التركية.",
+    streamUrl: "https://tv-trtsporyldzweb.medya.trt.com.tr/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","turkey"]
   },
   {
     id: "trt-world",
     name: "TRT World",
     category: "News",
-    country: "Turkey",
-    countryCode: "TR",
-    language: "English",
-    logo: "🇹🇷",
-    description: "Turkey's international news broadcaster covering global affairs 24/7.",
+    country: "Turkey", countryCode: "TR", language: "English",
+    logo: "🌍",
+    description: "TRT World — قناة تركية دولية بالإنجليزية، تغطية كأس العالم 2026.",
     streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
-    youtubeId: "mMEBTdRFBKo",
-    website: "https://www.trtworld.com",
-    isLive: true, isFeatured: false,
-    tags: ["turkey","middle-east","international"]
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","news","turkey","english"]
   },
   {
-    id: "cgtn",
-    name: "CGTN",
-    category: "News",
-    country: "China",
-    countryCode: "CN",
-    language: "English",
-    logo: "🇨🇳",
-    description: "China Global Television Network — China's international English news broadcaster.",
-    streamUrl: "",
-    youtubeId: "FJHxulSaFSU",
-    website: "https://www.cgtn.com",
-    isLive: true, isFeatured: false,
-    tags: ["china","asia","international"]
+    id: "snrt-laayoune",
+    name: "SNRT — الرياضية",
+    category: "Sports",
+    country: "Morocco", countryCode: "MA", language: "Arabic",
+    logo: "🇲🇦",
+    description: "القناة الرياضية المغربية SNRT — الناقلة الرسمية لكأس العالم 2026 (يُقام بالمغرب).",
+    streamUrl: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/snrt_sport/hls_snrt_csa_sport/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","morocco","arabic"]
   },
   {
-    id: "euronews-en",
-    name: "Euronews",
-    category: "News",
-    country: "Europe",
-    countryCode: "EU",
-    language: "English",
-    logo: "🇪🇺",
-    description: "European news channel covering global stories from a European perspective.",
-    streamUrl: "https://rakuten-euronews-1-eu.samsung.wurl.tv/manifest/playlist.m3u8",
-    youtubeId: "hZOrQ9iSAqo",
-    website: "https://www.euronews.com",
-    isLive: true, isFeatured: false,
-    tags: ["europe","news","multilingual"]
+    id: "snrt-al-aoula",
+    name: "SNRT — الأولى",
+    category: "Entertainment",
+    country: "Morocco", countryCode: "MA", language: "Arabic",
+    logo: "🇲🇦",
+    description: "القناة الأولى المغربية SNRT — بث مباشر رسمي مجاني.",
+    streamUrl: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/al_aoula_inter/hls_snrt_csa_ao_inter/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["morocco","arabic","entertainment"]
   },
   {
-    id: "abc-australia",
-    name: "ABC Australia",
-    category: "News",
-    country: "Australia",
-    countryCode: "AU",
-    language: "English",
-    logo: "🇦🇺",
-    description: "Australia's national public broadcaster — news, current affairs, and entertainment.",
-    streamUrl: "",
-    youtubeId: "4SpCfzDFBnE",
-    website: "https://www.abc.net.au",
-    isLive: true, isFeatured: false,
-    tags: ["australia","public","english"]
+    id: "arryadia",
+    name: "Arryadia — الرياضية",
+    category: "Sports",
+    country: "Morocco", countryCode: "MA", language: "Arabic",
+    logo: "⚽",
+    description: "قناة الرياضية من المغرب — تغطية كأس العالم 2026 ومباريات مباشرة.",
+    streamUrl: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/arryadia/hls_snrt_csa_arryadia/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","morocco","arabic"]
   },
   {
-    id: "wion",
-    name: "WION",
-    category: "News",
-    country: "India",
-    countryCode: "IN",
-    language: "English",
-    logo: "🇮🇳",
-    description: "World Is One News — India's global news network with live coverage.",
-    streamUrl: "",
-    youtubeId: "QEsE_KNKQIA",
-    website: "https://www.wionews.com",
-    isLive: true, isFeatured: false,
-    tags: ["india","asia","english","news"]
+    id: "rtbf-la-une",
+    name: "RTBF La Une",
+    category: "Sports",
+    country: "Belgium", countryCode: "BE", language: "French",
+    logo: "🇧🇪",
+    description: "RTBF La Une — القناة البلجيكية العامة، تنقل كأس العالم 2026 مجاناً.",
+    streamUrl: "https://rtbfliveamd.akamaized.net/hls/live/659380/liveStream_LaUne/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","belgium","french"]
+  },
+  {
+    id: "srf-zwei",
+    name: "SRF zwei",
+    category: "Sports",
+    country: "Switzerland", countryCode: "CH", language: "German",
+    logo: "🇨🇭",
+    description: "SRF zwei — القناة السويسرية الناقلة لكأس العالم 2026 مجاناً.",
+    streamUrl: "https://srfaod-vh.akamaihd.net/i/world_1_srf_zwei_hd_,512k,800k,1200k,1600k,2400k,.mp4.csmil/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","switzerland"]
+  },
+  {
+    id: "ard-das-erste",
+    name: "ARD Das Erste",
+    category: "Sports",
+    country: "Germany", countryCode: "DE", language: "German",
+    logo: "🇩🇪",
+    description: "ARD Das Erste — القناة الألمانية الأولى العامة، ناقلة كأس العالم 2026.",
+    streamUrl: "https://mcdn.daserste.de/daserste/de/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","germany","public"]
+  },
+  {
+    id: "zdf",
+    name: "ZDF",
+    category: "Sports",
+    country: "Germany", countryCode: "DE", language: "German",
+    logo: "🇩🇪",
+    description: "ZDF — القناة العامة الألمانية الثانية، شريكة ARD في بث كأس العالم.",
+    streamUrl: "https://zdf-hls-live.akamaized.net/hls/live/2016498/zdf/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","germany","public"]
+  },
+  {
+    id: "france2",
+    name: "France 2",
+    category: "Sports",
+    country: "France", countryCode: "FR", language: "French",
+    logo: "🇫🇷",
+    description: "France 2 — القناة الفرنسية العامة، تنقل مباريات كأس العالم 2026 مجاناً.",
+    streamUrl: "https://simulcast.france.tv/stream/france-2",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","france","public"]
+  },
+  {
+    id: "rtve-la1",
+    name: "RTVE La 1",
+    category: "Sports",
+    country: "Spain", countryCode: "ES", language: "Spanish",
+    logo: "🇪🇸",
+    description: "RTVE La 1 — القناة الإسبانية الأولى، ناقلة رسمية لكأس العالم 2026.",
+    streamUrl: "https://ztnr.rtve.es/ztnr/1688877.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","spain","public"]
+  },
+  {
+    id: "rtp1",
+    name: "RTP 1",
+    category: "Sports",
+    country: "Portugal", countryCode: "PT", language: "Portuguese",
+    logo: "🇵🇹",
+    description: "RTP 1 — القناة البرتغالية العامة، تنقل كأس العالم 2026 مجاناً.",
+    streamUrl: "https://streaming-live.rtp.pt/liverepeater/stream8/chunks.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","portugal","public"]
+  },
+  {
+    id: "rai-uno",
+    name: "RAI 1",
+    category: "Sports",
+    country: "Italy", countryCode: "IT", language: "Italian",
+    logo: "🇮🇹",
+    description: "RAI 1 — القناة الإيطالية العامة الأولى، ناقلة كأس العالم 2026.",
+    streamUrl: "https://creativemedia4.rai.it/Italy/rai1/master_rai1.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","italy","public"]
+  },
+  {
+    id: "nrk1",
+    name: "NRK1",
+    category: "Sports",
+    country: "Norway", countryCode: "NO", language: "Norwegian",
+    logo: "🇳🇴",
+    description: "NRK1 — القناة النرويجية العامة، تنقل مباريات كأس العالم 2026.",
+    streamUrl: "https://nrk-nrk1-no.akamaized.net/i/nrk1_0@506985/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","norway"]
+  },
+  {
+    id: "svt1",
+    name: "SVT1",
+    category: "Sports",
+    country: "Sweden", countryCode: "SE", language: "Swedish",
+    logo: "🇸🇪",
+    description: "SVT1 — القناة السويدية العامة، ناقلة كأس العالم 2026 مجاناً.",
+    streamUrl: "https://svtwebsverige-lh.akamaihd.net/i/svtone_0@333416/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","sweden"]
+  },
+  {
+    id: "al-kass-1",
+    name: "Al Kass Sports 1",
+    category: "Sports",
+    country: "Qatar", countryCode: "QA", language: "Arabic",
+    logo: "🏆",
+    description: "قناة الكأس الرياضية — الناقلة الرسمية لكأس العالم 2026 في قطر.",
+    streamUrl: "https://5e26c45b1f7d5.streamlock.net:1935/alkasslive/alkass1/playlist.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: true,
+    tags: ["world-cup-2026","football","qatar","arabic"]
+  },
+  {
+    id: "al-kass-2",
+    name: "Al Kass Sports 2",
+    category: "Sports",
+    country: "Qatar", countryCode: "QA", language: "Arabic",
+    logo: "⚽",
+    description: "قناة الكأس الرياضية 2 — قناة ثانية لبث مباريات كأس العالم 2026.",
+    streamUrl: "https://5e26c45b1f7d5.streamlock.net:1935/alkasslive/alkass2/playlist.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: true,
+    tags: ["world-cup-2026","football","qatar","arabic"]
   },
 
-  // ── ARABIC NEWS ──────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // 📰 NEWS — أخبار
+  // ══════════════════════════════════════════════════════════
+  {
+    id: "aljazeera-en",
+    name: "Al Jazeera English",
+    category: "News",
+    country: "Qatar", countryCode: "QA", language: "English",
+    logo: "🌍",
+    description: "Al Jazeera English — live news from Doha, Qatar, 24/7.",
+    streamUrl: "https://live-hls-web-aje.getaj.net/AJE/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: false,
+    tags: ["news","english","qatar","international"]
+  },
   {
     id: "aljazeera-ar",
     name: "الجزيرة العربية",
     category: "News",
-    country: "Qatar",
-    countryCode: "QA",
-    language: "Arabic",
+    country: "Qatar", countryCode: "QA", language: "Arabic",
     logo: "📡",
-    description: "قناة الجزيرة — البث المباشر للأخبار العربية والدولية على مدار الساعة.",
+    description: "قناة الجزيرة — البث المباشر للأخبار العربية والدولية.",
     streamUrl: "https://live-hls-web-ajaz.getaj.net/AJAZ/index.m3u8",
-    youtubeId: "CNt5cInp_Vs",
-    website: "https://www.aljazeera.net",
-    isLive: true, isFeatured: true,
-    tags: ["arabic","news","middle-east"]
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: false,
+    tags: ["news","arabic","qatar","international"]
+  },
+  {
+    id: "dw-en",
+    name: "DW News",
+    category: "News",
+    country: "Germany", countryCode: "DE", language: "English",
+    logo: "🇩🇪",
+    description: "Deutsche Welle — Germany's international broadcaster, 24/7 news.",
+    streamUrl: "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["news","english","germany"]
   },
   {
     id: "france24-ar",
     name: "فرانس 24 عربي",
     category: "News",
-    country: "France",
-    countryCode: "FR",
-    language: "Arabic",
-    logo: "📺",
-    description: "قناة فرانس 24 العربية — أخبار دولية بالعربية على مدار الساعة.",
+    country: "France", countryCode: "FR", language: "Arabic",
+    logo: "🇫🇷",
+    description: "فرانس 24 — أخبار دولية بالعربية على مدار الساعة.",
     streamUrl: "https://stream.france24.com/hls/live/2037097/F24_AR_HI_HLS/master.m3u8",
-    youtubeId: "xu5oBB0v3Qk",
-    website: "https://www.france24.com/ar",
-    isLive: true, isFeatured: false,
-    tags: ["arabic","france","news"]
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["news","arabic","france"]
+  },
+  {
+    id: "france24-en",
+    name: "France 24 English",
+    category: "News",
+    country: "France", countryCode: "FR", language: "English",
+    logo: "🔵",
+    description: "France 24 — French international news channel in English.",
+    streamUrl: "https://stream.france24.com/hls/live/2037092/F24_EN_HI_HLS/master.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["news","english","france"]
+  },
+  {
+    id: "euronews",
+    name: "Euronews",
+    category: "News",
+    country: "Europe", countryCode: "EU", language: "English",
+    logo: "🇪🇺",
+    description: "Euronews — live European and world news in English.",
+    streamUrl: "https://rakuten-euronews-1-eu.samsung.wurl.tv/manifest/playlist.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["news","english","europe"]
   },
   {
     id: "rt-arabic",
     name: "RT Arabic",
     category: "News",
-    country: "Russia",
-    countryCode: "RU",
-    language: "Arabic",
+    country: "Russia", countryCode: "RU", language: "Arabic",
     logo: "📻",
-    description: "روسيا اليوم بالعربية — أخبار دولية وتحليلات معمّقة.",
+    description: "روسيا اليوم بالعربية — أخبار دولية وتحليلات.",
     streamUrl: "https://rt-arab.rttv.com/live/rtarab/playlist.m3u8",
-    youtubeId: "LvTLGMnNqjY",
-    website: "https://arabic.rt.com",
-    isLive: true, isFeatured: false,
-    tags: ["arabic","russia","news"]
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["news","arabic","russia"]
   },
-
-  // ── SPANISH NEWS ─────────────────────────────────────────────
   {
     id: "rtve-24h",
-    name: "RTVE Canal 24h",
+    name: "RTVE 24h",
     category: "News",
-    country: "Spain",
-    countryCode: "ES",
-    language: "Spanish",
+    country: "Spain", countryCode: "ES", language: "Spanish",
     logo: "🇪🇸",
-    description: "Canal 24 Horas de RTVE — noticias en directo de la televisión pública española.",
+    description: "RTVE Canal 24 Horas — noticias en directo de España y el mundo.",
     streamUrl: "https://ztnr.rtve.es/ztnr/1826237.m3u8",
-    youtubeId: "5BKMU6OtFP0",
-    website: "https://www.rtve.es",
-    isLive: true, isFeatured: true,
-    tags: ["spanish","spain","news","public"]
-  },
-  {
-    id: "cnn-espanol",
-    name: "CNN en Español",
-    category: "News",
-    country: "USA",
-    countryCode: "US",
-    language: "Spanish",
-    logo: "📺",
-    description: "CNN en Español — noticias de América Latina y el mundo las 24 horas.",
-    streamUrl: "",
-    youtubeId: "0kDkAFuFMsA",
-    website: "https://cnnespanol.cnn.com",
-    isLive: true, isFeatured: false,
-    tags: ["spanish","latin-america","USA","news"]
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["news","spanish","spain"]
   },
 
-  // ── FRENCH NEWS ──────────────────────────────────────────────
-  {
-    id: "france-info",
-    name: "France Info TV",
-    category: "News",
-    country: "France",
-    countryCode: "FR",
-    language: "French",
-    logo: "🔵",
-    description: "France Télévisions — chaîne d'info en continu, gratuite et publique.",
-    streamUrl: "",
-    youtubeId: "wVBxmBYFn3s",
-    website: "https://www.francetvinfo.fr",
-    isLive: true, isFeatured: false,
-    tags: ["french","france","news","public"]
-  },
-
-  // ── SPORTS ───────────────────────────────────────────────────
-  {
-    id: "olympic-channel",
-    name: "Olympic Channel",
-    category: "Sports",
-    country: "International",
-    countryCode: "INT",
-    language: "English",
-    logo: "🏅",
-    description: "Official Olympic Channel — home of the Olympic Games, sports news and highlights.",
-    streamUrl: "",
-    youtubeId: "fnboSRfkWXo",
-    website: "https://www.olympicchannel.com",
-    isLive: true, isFeatured: true,
-    tags: ["olympics","athletics","international"]
-  },
-  {
-    id: "nba-league",
-    name: "NBA TV Free",
-    category: "Sports",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
-    logo: "🏀",
-    description: "NBA free preview games, highlights, and analysis from the official NBA channel.",
-    streamUrl: "",
-    youtubeId: "cu0CYEcfO5A",
-    website: "https://www.nba.com",
-    isLive: false, isFeatured: true,
-    tags: ["basketball","USA","NBA"]
-  },
-  {
-    id: "nfl-network",
-    name: "NFL Network",
-    category: "Sports",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
-    logo: "🏈",
-    description: "NFL official channel — highlights, analysis, and live game coverage.",
-    streamUrl: "",
-    youtubeId: "I3E7Oq1wHgA",
-    website: "https://www.nfl.com",
-    isLive: false, isFeatured: false,
-    tags: ["american-football","USA","NFL"]
-  },
-  {
-    id: "formula-e",
-    name: "Formula E",
-    category: "Sports",
-    country: "International",
-    countryCode: "INT",
-    language: "English",
-    logo: "🏎️",
-    description: "Official Formula E channel — electric single-seater motorsport races and highlights.",
-    streamUrl: "",
-    youtubeId: "O6yNh3NKQGM",
-    website: "https://www.fiaformulae.com",
-    isLive: false, isFeatured: false,
-    tags: ["motorsport","formula-e","racing"]
-  },
-
-  // ── EDUCATION ────────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // 🚀 EDUCATION — تعليم
+  // ══════════════════════════════════════════════════════════
   {
     id: "nasa-tv",
     name: "NASA TV",
     category: "Education",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
+    country: "USA", countryCode: "US", language: "English",
     logo: "🚀",
-    description: "Live NASA TV — ISS footage, rocket launches, press conferences, and space exploration.",
+    description: "Live NASA TV — ISS, rocket launches, and space exploration 24/7.",
     streamUrl: "https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8",
-    youtubeId: "nA9UZF-SZoQ",
-    website: "https://www.nasa.gov",
-    isLive: true, isFeatured: true,
-    tags: ["space","science","USA","public","free"]
-  },
-  {
-    id: "cspan",
-    name: "C-SPAN",
-    category: "Education",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
-    logo: "🏛️",
-    description: "Free public affairs network covering US Congress and government proceedings live.",
-    streamUrl: "https://cspan.akamaized.net/hls/live/2019072/CSPAN1_STREAM_HLS/master.m3u8",
-    youtubeId: "xMxwi5BdaSk",
-    website: "https://www.c-span.org",
-    isLive: true, isFeatured: false,
-    tags: ["politics","USA","government","public"]
-  },
-  {
-    id: "ted-talks",
-    name: "TED Talks",
-    category: "Education",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
-    logo: "💡",
-    description: "TED Talks — ideas worth spreading. Talks on technology, science, global issues.",
-    streamUrl: "",
-    youtubeId: "Zi9bFsR6fms",
-    website: "https://www.ted.com",
-    isLive: false, isFeatured: false,
-    tags: ["talks","science","technology","education"]
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: false,
+    tags: ["space","science","nasa","usa"]
   },
 
-  // ── MUSIC ────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // 🎵 MUSIC — موسيقى
+  // ══════════════════════════════════════════════════════════
   {
-    id: "lofi-hip-hop",
-    name: "Lofi Hip Hop Radio",
+    id: "mezzo",
+    name: "Mezzo Live HD",
     category: "Music",
-    country: "International",
-    countryCode: "INT",
-    language: "Instrumental",
-    logo: "🎵",
-    description: "24/7 lofi hip hop beats to relax and study — the official Lofi Girl stream.",
-    streamUrl: "",
-    youtubeId: "jfKfPfyJRdk",
-    website: "https://www.youtube.com/@LofiGirl",
-    isLive: true, isFeatured: true,
-    tags: ["lofi","chill","study","music"]
-  },
-  {
-    id: "lofi-jazz",
-    name: "Lofi Jazz Radio",
-    category: "Music",
-    country: "International",
-    countryCode: "INT",
-    language: "Instrumental",
-    logo: "🎷",
-    description: "Smooth jazz lofi — relaxing jazz beats streaming live 24/7.",
-    streamUrl: "",
-    youtubeId: "NEz0yJfKfpE",
-    website: "https://www.youtube.com/@LofiGirl",
-    isLive: true, isFeatured: false,
-    tags: ["jazz","chill","lofi","music"]
-  },
-  {
-    id: "classical-live",
-    name: "Classical Music Live",
-    category: "Music",
-    country: "International",
-    countryCode: "INT",
-    language: "Instrumental",
+    country: "France", countryCode: "FR", language: "Instrumental",
     logo: "🎻",
-    description: "Live classical music concerts and performances streamed 24/7.",
-    streamUrl: "",
-    youtubeId: "jYLJwOuRlJw",
-    website: "https://www.youtube.com",
-    isLive: true, isFeatured: false,
-    tags: ["classical","orchestra","live","music"]
+    description: "Mezzo — classical music, jazz concerts and opera live from Europe.",
+    streamUrl: "https://stream.mezzo.tv/mezzo_web/index.m3u8",
+    youtubeId: null,
+    isLive: true, isFeatured: false, isWC2026: false,
+    tags: ["classical","jazz","opera","music"]
   },
 
-  // ── KIDS ─────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // 🧸 KIDS
+  // ══════════════════════════════════════════════════════════
   {
     id: "pbs-kids",
     name: "PBS Kids 24/7",
     category: "Kids",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
+    country: "USA", countryCode: "US", language: "English",
     logo: "📺",
-    description: "PBS Kids free 24/7 live stream — educational programming for children.",
+    description: "PBS Kids — free educational TV for children, 24/7 live stream.",
     streamUrl: "https://d2e1asnsl7br7b.cloudfront.net/7782e20e49034254a448d7f337e09fd9/index.m3u8",
-    youtubeId: "dkFRzLxZAbM",
-    website: "https://pbskids.org",
-    isLive: true, isFeatured: true,
-    tags: ["PBS","USA","educational","free","public"]
-  },
-  {
-    id: "kids-cartoons",
-    name: "Kids Cartoons TV",
-    category: "Kids",
-    country: "International",
-    countryCode: "INT",
-    language: "English",
-    logo: "🧸",
-    description: "Free cartoon shows and animated movies for kids — available 24/7.",
-    streamUrl: "",
-    youtubeId: "dkFRzLxZAbM",
-    website: "https://www.youtube.com",
-    isLive: true, isFeatured: false,
-    tags: ["kids","cartoons","animation","free"]
-  },
-
-  // ── ENTERTAINMENT ────────────────────────────────────────────
-  {
-    id: "mbc-drama",
-    name: "MBC Drama",
-    category: "Entertainment",
-    country: "Saudi Arabia",
-    countryCode: "SA",
-    language: "Arabic",
-    logo: "🎭",
-    description: "قناة MBC دراما — أفضل المسلسلات العربية والتركية المدبلجة.",
-    streamUrl: "",
-    youtubeId: "Xp8iyBcj6HQ",
-    website: "https://www.mbc.net",
-    isLive: true, isFeatured: true,
-    tags: ["arabic","drama","entertainment","saudi"]
-  },
-  {
-    id: "comedy-central",
-    name: "Comedy TV Live",
-    category: "Entertainment",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
-    logo: "😂",
-    description: "Stand-up comedy specials and comedy shows streaming live.",
-    streamUrl: "",
-    youtubeId: "sFnVlQeNEpo",
-    website: "https://www.youtube.com",
-    isLive: false, isFeatured: false,
-    tags: ["comedy","entertainment","USA"]
-  },
-
-  // ── DOCUMENTARY ──────────────────────────────────────────────
-  {
-    id: "free-documentary",
-    name: "Free Documentary",
-    category: "Documentary",
-    country: "International",
-    countryCode: "INT",
-    language: "English",
-    logo: "🎬",
-    description: "Full-length free documentaries on nature, history, science, and society.",
-    streamUrl: "",
-    youtubeId: "2k7fBGBmnRo",
-    website: "https://www.youtube.com/@FreeDocumentary",
-    isLive: false, isFeatured: true,
-    tags: ["documentary","nature","history","free"]
-  },
-  {
-    id: "dw-documentary",
-    name: "DW Documentary",
-    category: "Documentary",
-    country: "Germany",
-    countryCode: "DE",
-    language: "English",
-    logo: "🌍",
-    description: "DW Documentary — in-depth reporting on global topics, society, and environment.",
-    streamUrl: "",
-    youtubeId: "J9VQMNf3Mfs",
-    website: "https://www.dw.com/en/documentaries",
-    isLive: false, isFeatured: false,
-    tags: ["documentary","germany","society","environment"]
-  },
-  {
-    id: "nat-geo-wild",
-    name: "Nat Geo Wild",
-    category: "Documentary",
-    country: "USA",
-    countryCode: "US",
-    language: "English",
-    logo: "🦁",
-    description: "National Geographic — nature and wildlife documentaries and live streams.",
-    streamUrl: "",
-    youtubeId: "rN8KCp8XTPM",
-    website: "https://www.nationalgeographic.com",
-    isLive: false, isFeatured: false,
-    tags: ["wildlife","nature","documentary"]
+    youtubeId: null,
+    isLive: true, isFeatured: true, isWC2026: false,
+    tags: ["kids","education","usa","free"]
   }
 ];
 
-// ── MATCH SCHEDULES ──────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// كأس العالم 2026 — جدول المباريات التقريبي
+// ══════════════════════════════════════════════════════════
 const MATCH_SCHEDULES = [
-  { time: "Live",     match: "Olympics Athletics Finals",   channel: "Olympic Channel",  sport: "🏅 Athletics" },
-  { time: "18:00",    match: "Premier League Highlights",   channel: "BBC Sport",        sport: "⚽ Football" },
-  { time: "20:30",    match: "NBA Free Preview Game",       channel: "NBA TV",           sport: "🏀 Basketball" },
-  { time: "21:00",    match: "Ligue 1 Weekly Digest",       channel: "France 24 Sport",  sport: "⚽ Football" },
-  { time: "Tomorrow", match: "Tour de France Stage",        channel: "Eurosport Free",   sport: "🚴 Cycling" },
-  { time: "Tomorrow", match: "Wimbledon Highlights",        channel: "BBC Sport",        sport: "🎾 Tennis" },
-  { time: "Sun 15:00",match: "AFL Round Highlights",        channel: "AFL Live",         sport: "🏉 AFL" },
-  { time: "Sun 22:00",match: "Formula E Race",              channel: "Formula E",        sport: "🏎️ Motorsport" }
+  { time: "11 Jun",   match: "🏆 افتتاح كأس العالم 2026",         channel: "TRT1 / SNRT / ARD",        sport: "⚽ WC2026" },
+  { time: "11 Jun",   match: "المكسيك 🆚 المضيف (USA)",            channel: "RTVE / TRT Spor",          sport: "⚽ WC2026" },
+  { time: "12 Jun",   match: "المغرب 🆚 منافس المجموعة",           channel: "Arryadia / SNRT Sport",    sport: "⚽ WC2026" },
+  { time: "13 Jun",   match: "ألمانيا 🆚 منافسها",                 channel: "ARD / ZDF",                sport: "⚽ WC2026" },
+  { time: "14 Jun",   match: "إسبانيا 🆚 منافسها",                 channel: "RTVE La 1",                sport: "⚽ WC2026" },
+  { time: "15 Jun",   match: "فرنسا 🆚 منافسها",                   channel: "France 2",                 sport: "⚽ WC2026" },
+  { time: "16 Jun",   match: "البرتغال 🆚 منافسها",                channel: "RTP 1",                    sport: "⚽ WC2026" },
+  { time: "17 Jun",   match: "إيطاليا 🆚 منافسها",                 channel: "RAI 1",                    sport: "⚽ WC2026" },
+  { time: "Live",     match: "🔴 تابع أحدث نتائج المجموعات",        channel: "Al Kass 1 & 2",            sport: "⚽ WC2026" },
+  { time: "Jul",      match: "دور الـ 16 — ثمن النهائي",           channel: "TRT / France 2 / ARD",     sport: "⚽ WC2026" },
+  { time: "Jul",      match: "ربع النهائي",                        channel: "جميع القنوات الناقلة",      sport: "⚽ WC2026" },
+  { time: "Jul",      match: "نصف النهائي",                        channel: "جميع القنوات الناقلة",      sport: "⚽ WC2026" },
+  { time: "19 Jul",   match: "🏆 نهائي كأس العالم 2026",           channel: "TRT1 / SNRT / ARD / RAI1", sport: "⚽ FINAL" }
 ];
 
-// ── CATEGORIES ───────────────────────────────────────────────
 const CATEGORIES = [
   { id: "All",           emoji: "📺", label: "All Channels" },
+  { id: "Sports",        emoji: "🏆", label: "Sports / WC2026" },
   { id: "News",          emoji: "📰", label: "News" },
-  { id: "Sports",        emoji: "🏆", label: "Sports" },
   { id: "Entertainment", emoji: "🎬", label: "Entertainment" },
   { id: "Kids",          emoji: "🧸", label: "Kids" },
   { id: "Music",         emoji: "🎵", label: "Music" },
