@@ -72,6 +72,35 @@ CNAME www   YOUR_USERNAME.github.io
 
 ---
 
+## 🌐 Browse All Sports (700+ Live Channels)
+
+Coub.xyz includes a **"Browse All Sports Channels"** feature in the Sports Hub that loads the live, hourly-updated playlist directly from iptv-org:
+
+```
+https://iptv-org.github.io/iptv/categories/sports.m3u
+```
+
+This is fetched **client-side at runtime** (in the visitor's browser), so:
+- The channel list is always current — no manual updates needed
+- 700+ global sports channels are searchable by name, country, or league
+- Tapping a channel opens an inline HLS player (via hls.js)
+
+**Note on reliability:** Many entries in large community M3U lists are geo-restricted, low-bitrate, or temporarily offline — this is normal for open IPTV aggregations. The built-in curated channels (`channels.js`) are hand-picked for higher uptime, while "Browse All" gives access to the full long-tail catalog including niche regional sports feeds.
+
+If the live fetch fails due to browser CORS restrictions, the UI shows a direct link to the playlist that users can paste into VLC, IPTV Smarters, or any M3U player.
+
+### Adding more external playlists
+Edit `EXTERNAL_M3U_SOURCES` in `channels.js`:
+```js
+const EXTERNAL_M3U_SOURCES = {
+  sports: { name: "...", url: "https://iptv-org.github.io/iptv/categories/sports.m3u" },
+  news:   { name: "...", url: "https://iptv-org.github.io/iptv/categories/news.m3u" },
+  // add more categories from https://github.com/iptv-org/iptv/blob/master/PLAYLISTS.md
+};
+```
+
+---
+
 ## 📡 Stream Source Management
 
 All streams in `channels.js` are:

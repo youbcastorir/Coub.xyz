@@ -611,3 +611,137 @@ function init(){
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// ══════════════════════════════════════════════════════════
+// BROWSE ALL SPORTS — Live 700+ channel playlist (iptv-org)
+// Fetched client-side at runtime; bypasses build-time limits.
+// ══════════════════════════════════════════════════════════
+
+let _browseAllCache = null;
+let _browsePlayer = null;
+
+async function loadBrowseAllSports() {
+  const status = $('browseStatus');
+  const list   = $('browseList');
+
+  if (_browseAllCache) {
+    renderBrowseList(_browseAllCache);
+    return;
+  }
+
+  status.classList.remove('hidden');
+  status.classList.remove('error');
+  status.innerHTML = `<div class="spinner-ring"></div><div>${t('loading') || 'Loading live playlist…'}</div>`;
+  list.innerHTML = '';
+
+  try {
+    const channels = await M3UParser.fetchPlaylist(EXTERNAL_M3U_SOURCES.sports.url);
+    _browseAllCache = channels;
+    status.classList.add('hidden');
+    renderBrowseList(channels);
+  } catch (err) {
+    status.classList.add('error');
+    status.innerHTML = `
+      <div style="font-size:32px">⚠️</div>
+      <div>Could not load the live playlist directly (network/CORS).</div>
+      <div style="font-size:12px;margin-top:8px">
+        Open the playlist directly:<br>
+        <a href="${EXTERNAL_M3U_SOURCES.sports.url}" target="_blank" style="color:var(--accent)">${EXTERNAL_M3U_SOURCES.sports.url}</a>
+      </div>
+      <div style="font-size:12px;margin-top:12px;color:var(--muted)">
+        Tip: paste this URL into VLC, IPTV Smarters, or any M3U-compatible player for instant access to 700+ live sports channels.
+      </div>`;
+  }
+}
+
+function renderBrowseList(channels) {
+  const list = $('browseList');
+  const countEl = document.createElement('div');
+  countEl.className = 'browse-count';
+  countEl.textContent = `${channels.length} channels loaded`;
+
+  list.innerHTML = '';
+  list.appendChild(countEl);
+
+  channels.forEach(ch => {
+    const item = document.createElement('div');
+    item.className = 'browse-item';
+    item.innerHTML = `
+      <div class="browse-item-logo">
+        ${ch.logo ? `<img src="${ch.logo}" loading="lazy" onerror="this.parentElement.innerHTML='📺'">` : '📺'}
+      </div>
+      <div class="browse-item-info">
+        <div class="browse-item-name">${ch.name}</div>
+        <div class="browse-item-meta">${ch.group || 'Sports'}${ch.country ? ' · ' + ch.country : ''}</div>
+      </div>
+      <div class="browse-item-play">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>`;
+    item.onclick = () => openBrowsePlayer(ch);
+    list.appendChild(item);
+  });
+}
+
+function initBrowseSearch() {
+  const input = $('browseSearchInput');
+  input.addEventListener('input', () => {
+    if (!_browseAllCache) return;
+    const q = input.value.toLowerCase().trim();
+    const filtered = !q ? _browseAllCache : _browseAllCache.filter(ch =>
+      ch.name.toLowerCase().includes(q) ||
+      (ch.group||'').toLowerCase().includes(q) ||
+      (ch.country||'').toLowerCase().includes(q)
+    );
+    renderBrowseList(filtered);
+  });
+}
+
+// Inline player for a channel chosen from the 700+ list
+function openBrowsePlayer(ch) {
+  const modal = document.createElement('div');
+  modal.className = 'browse-player-modal';
+  modal.innerHTML = `
+    <div class="browse-player-box">
+      <button class="browse-player-close" id="browsePlayerClose">✕</button>
+    </div>
+    <div class="browse-player-title">${ch.name}</div>
+    <div class="browse-player-title" style="font-size:12px;color:var(--muted);margin-top:4px" id="browsePlayerStatus">${t('loading')||'Loading…'}</div>
+  `;
+  document.body.appendChild(modal);
+
+  const box = modal.querySelector('.browse-player-box');
+  const statusEl = modal.querySelector('#browsePlayerStatus');
+
+  const fakeChannel = { id: 'browse-tmp', streamUrl: ch.url };
+  createVideoPlayer(fakeChannel, box,
+    () => { statusEl.textContent = '🔴 LIVE'; },
+    () => { statusEl.textContent = t('error_stream') || 'Stream unavailable — try another channel'; statusEl.style.color = '#ff6b6b'; }
+  );
+
+  const close = () => {
+    destroyPlayer('browse-tmp');
+    const vid = box.querySelector('video');
+    if (vid) { vid.pause(); vid.src=''; }
+    modal.remove();
+  };
+  modal.querySelector('#browsePlayerClose').onclick = close;
+  modal.onclick = e => { if (e.target === modal) close(); };
+}
+
+// ── Wire up Browse All entry points ──────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const browseBtn = $('browseAllBtn');
+    const backBtn = $('browseAllBack');
+    if (browseBtn) {
+      browseBtn.onclick = () => {
+        showView('browseall');
+        loadBrowseAllSports();
+        initBrowseSearch();
+      };
+    }
+    if (backBtn) {
+      backBtn.onclick = () => showView('sports');
+    }
+  }, 2100);
+});

@@ -417,3 +417,25 @@ const CATEGORIES = [
   { id: "Education",     emoji: "📚", label: "Education" },
   { id: "Documentary",   emoji: "🌍", label: "Documentary" }
 ];
+
+// ══════════════════════════════════════════════════════════
+// EXTERNAL M3U SOURCE — iptv-org Sports Category (700+ channels)
+// Live, auto-updated hourly. Used by the "Browse All Sports" feature.
+// ══════════════════════════════════════════════════════════
+const EXTERNAL_M3U_SOURCES = {
+  sports: {
+    name: "iptv-org Sports (700+ channels)",
+    url: "https://iptv-org.github.io/iptv/categories/sports.m3u",
+    description: "Live-updated global sports playlist, refreshed hourly by iptv-org"
+  },
+  news: {
+    name: "iptv-org News",
+    url: "https://iptv-org.github.io/iptv/categories/news.m3u",
+    description: "Global news channels"
+  },
+  movies: {
+    name: "iptv-org Movies",
+    url: "https://iptv-org.github.io/iptv/categories/movies.m3u",
+    description: "Free movie channels"
+  }
+};
