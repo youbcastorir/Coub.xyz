@@ -1,0 +1,63 @@
+# Peczo.c.la — robots.txt
+# https://coub.xyz/
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /style.css
+Allow: /app.js
+Allow: /gallery.js
+Allow: /search.js
+Allow: /upload.js
+Allow: /moderation.js
+Allow: /manifest.json
+Allow: /sitemap.xml
+
+# Block admin/private paths (add if you create them)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/admin/
+
+# Allow major search engine bots explicitly
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 5
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 5
+
+# Block bad bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://coub.xyz/sitemap.xml
+
+# Host
+Host: coub.xyz

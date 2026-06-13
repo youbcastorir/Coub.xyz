@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peczo.c.la — The World's Open Photo Album | Coub.xyz</title>
+  <meta name="description" content="Peczo is the world's open photo album. Upload, share, and explore photos from every country — no account required. A global visual memory for humanity." />
+  <meta name="keywords" content="photo sharing, public photo album, image gallery, free image upload, global photo community, online photo gallery, share photos" />
+  <meta name="author" content="Coub.xyz" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://coub.xyz/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Peczo.c.la — The World's Open Photo Album" />
+  <meta property="og:description" content="Upload and explore photos from every country. No account required. A giant public photo wall for the whole world." />
+  <meta property="og:url" content="https://coub.xyz/" />
+  <meta property="og:image" content="https://coub.xyz/og-image.jpg" />
+  <meta property="og:site_name" content="Peczo.c.la" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Peczo.c.la — The World's Open Photo Album" />
+  <meta name="twitter:description" content="Upload and explore photos from every corner of the world. No account needed." />
+  <meta name="twitter:image" content="https://coub.xyz/og-image.jpg" />
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Peczo.c.la",
+    "alternateName": "Coub.xyz",
+    "url": "https://coub.xyz/",
+    "description": "The World's Open Photo Album — share photos from anywhere, instantly.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://coub.xyz/?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "name": "Peczo Global Photo Gallery",
+    "description": "A public, open photo gallery with images from every country in the world.",
+    "url": "https://coub.xyz/",
+    "author": { "@type": "Organization", "name": "Coub.xyz" }
+  }
+  </script>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0A0A0F" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Peczo" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet for World Map -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="Peczo Home">
+        <span class="logo-mark">◉</span>
+        <span class="logo-text">Peczo<span class="logo-domain">.c.la</span></span>
+      </a>
+
+      <div class="nav-center">
+        <div class="nav-search-wrap">
+          <input type="search" id="navSearch" class="nav-search" placeholder="Search photos, tags, countries…" aria-label="Search photos" autocomplete="off" />
+          <button class="nav-search-btn" aria-label="Search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="live-counter" aria-live="polite">
+          <span class="counter-dot"></span>
+          <span id="liveCount">0</span> photos
+        </div>
+
+        <!-- Language selector -->
+        <div class="lang-menu" role="menu" aria-label="Language">
+          <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+            <span id="currentLang">EN</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="lang-dropdown" id="langDropdown" role="menu">
+            <button class="lang-option" data-lang="en" role="menuitem">🇬🇧 English</button>
+            <button class="lang-option" data-lang="ar" role="menuitem">🇸🇦 العربية</button>
+            <button class="lang-option" data-lang="fr" role="menuitem">🇫🇷 Français</button>
+            <button class="lang-option" data-lang="es" role="menuitem">🇪🇸 Español</button>
+          </div>
+        </div>
+
+        <!-- Theme toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+
+        <button class="btn-upload-nav" id="openUploadBtn" aria-label="Upload photo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span data-i18n="upload">Upload</span>
+        </button>
+
+        <button class="nav-mobile-menu" id="mobileMenuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile nav -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#trending" data-i18n="trending">Trending</a>
+      <a href="#categories" data-i18n="categories">Categories</a>
+      <a href="#map" data-i18n="world_map">World Map</a>
+      <a href="#contact" data-i18n="contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" role="banner">
+    <div class="hero-grain"></div>
+    <div class="hero-inner">
+      <div class="hero-badge" data-i18n-aria="hero_badge">
+        <span class="badge-dot"></span>
+        <span data-i18n="live_uploads">Live uploads from around the world</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="hero-title-line1" data-i18n="hero_title1">The World's</span>
+        <span class="hero-title-line2" data-i18n="hero_title2">Open Photo Album</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">Upload a photo. No account. No rules. Just the world.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" id="heroUploadBtn" data-i18n="share_a_photo">Share a Photo</button>
+        <a href="#gallery" class="btn-ghost" data-i18n="explore_gallery">Explore Gallery</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" id="statPhotos">0</span><span class="stat-label" data-i18n="photos_shared">Photos shared</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" id="statCountries">0</span><span class="stat-label" data-i18n="countries">Countries</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" id="statToday">0</span><span class="stat-label" data-i18n="uploaded_today">Uploaded today</span></div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </header>
+
+  <!-- ===== FILTER TABS ===== -->
+  <section class="filter-section" aria-label="Filter photos">
+    <div class="container">
+      <div class="filter-tabs" role="tablist">
+        <button class="filter-tab active" role="tab" data-filter="latest" data-i18n="latest" aria-selected="true">Latest</button>
+        <button class="filter-tab" role="tab" data-filter="trending" data-i18n="trending" aria-selected="false">Trending</button>
+        <button class="filter-tab" role="tab" data-filter="random" data-i18n="random" aria-selected="false">Random</button>
+        <button class="filter-tab" role="tab" data-filter="most_viewed" data-i18n="most_viewed" aria-selected="false">Most Viewed</button>
+      </div>
+
+      <div class="filter-right">
+        <select id="categoryFilter" class="filter-select" aria-label="Filter by category">
+          <option value="" data-i18n="all_categories">All Categories</option>
+          <option value="travel">✈️ Travel</option>
+          <option value="nature">🌿 Nature</option>
+          <option value="cities">🏙️ Cities</option>
+          <option value="art">🎨 Art</option>
+          <option value="animals">🐾 Animals</option>
+          <option value="sports">⚽ Sports</option>
+          <option value="food">🍜 Food</option>
+          <option value="technology">💻 Technology</option>
+          <option value="architecture">🏛️ Architecture</option>
+          <option value="history">📜 History</option>
+        </select>
+
+        <select id="countryFilter" class="filter-select" aria-label="Filter by country">
+          <option value="" data-i18n="all_countries">All Countries</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN GALLERY ===== -->
+  <main id="gallery" class="gallery-section" aria-label="Photo gallery">
+    <div class="container">
+      <div class="masonry-grid" id="photoGrid" role="list">
+        <!-- Photos injected by gallery.js -->
+      </div>
+      <div class="gallery-empty" id="galleryEmpty" hidden>
+        <div class="empty-icon">📷</div>
+        <p data-i18n="no_photos_yet">No photos yet. Be the first to share one!</p>
+        <button class="btn-primary" id="emptyUploadBtn" data-i18n="upload_now">Upload Now</button>
+      </div>
+      <div class="gallery-loading" id="galleryLoading" aria-busy="true">
+        <div class="spinner"></div>
+      </div>
+      <button class="btn-load-more" id="loadMoreBtn" data-i18n="load_more" hidden>Load More</button>
+    </div>
+  </main>
+
+  <!-- ===== CATEGORIES ===== -->
+  <section id="categories" class="categories-section" aria-labelledby="cat-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="cat-heading" data-i18n="browse_by_category">Browse by Category</h2>
+        <p data-i18n="cat_sub">Discover photos from every corner of human life</p>
+      </div>
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- Injected by gallery.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRENDING ===== -->
+  <section id="trending" class="trending-section" aria-labelledby="trend-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="trend-heading" data-i18n="trending_now">Trending Now</h2>
+        <span class="section-live"><span class="counter-dot"></span><span data-i18n="updated_live">Updated live</span></span>
+      </div>
+      <div class="trending-grid" id="trendingGrid">
+        <!-- Injected by gallery.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORLD MAP ===== -->
+  <section id="map" class="map-section" aria-labelledby="map-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="map-heading" data-i18n="world_map">World Map</h2>
+        <p data-i18n="map_sub">See where the latest photos come from</p>
+      </div>
+      <div id="worldMap" class="world-map" aria-label="Interactive world map showing photo locations"></div>
+      <div class="map-legend">
+        <span class="legend-item"><span class="legend-dot legend-hot"></span><span data-i18n="most_active">Most active</span></span>
+        <span class="legend-item"><span class="legend-dot legend-mid"></span><span data-i18n="active">Active</span></span>
+        <span class="legend-item"><span class="legend-dot legend-low"></span><span data-i18n="recent">Recent</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== UPLOAD MODAL ===== -->
+  <div class="modal-overlay" id="uploadModal" role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle" hidden>
+    <div class="modal-box upload-modal">
+      <button class="modal-close" id="closeUploadBtn" aria-label="Close upload modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h2 id="uploadModalTitle" data-i18n="share_your_photo">Share Your Photo</h2>
+      <p class="modal-sub" data-i18n="upload_sub">No account needed — just pick a photo and share it with the world.</p>
+
+      <div class="upload-drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Drop photo here or click to select">
+        <div class="drop-inner" id="dropInner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p data-i18n="drop_photo">Drop your photo here</p>
+          <span data-i18n="or_click_to_browse">or click to browse</span>
+          <span class="drop-hint" data-i18n="file_hint">JPG, PNG, WebP · Max 10MB</span>
+        </div>
+        <img src="" alt="" class="drop-preview" id="dropPreview" hidden />
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/gif" hidden />
+      </div>
+
+      <div class="upload-fields" id="uploadFields">
+        <div class="field-group">
+          <label for="photoTitle" data-i18n="title">Title</label>
+          <input type="text" id="photoTitle" maxlength="80" placeholder="Give your photo a title…" data-i18n-placeholder="title_placeholder" />
+        </div>
+        <div class="field-group">
+          <label for="photoDesc" data-i18n="description">Description</label>
+          <textarea id="photoDesc" maxlength="300" rows="3" placeholder="Tell the story behind this photo…" data-i18n-placeholder="desc_placeholder"></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="photoCountry" data-i18n="country">Country</label>
+            <select id="photoCountry">
+              <option value="" data-i18n="select_country">Select country…</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="photoCity" data-i18n="city">City</label>
+            <input type="text" id="photoCity" maxlength="50" placeholder="e.g. Paris" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="photoCategory" data-i18n="category">Category</label>
+          <select id="photoCategory">
+            <option value="" data-i18n="select_category">Select category…</option>
+            <option value="travel">✈️ Travel</option>
+            <option value="nature">🌿 Nature</option>
+            <option value="cities">🏙️ Cities</option>
+            <option value="art">🎨 Art</option>
+            <option value="animals">🐾 Animals</option>
+            <option value="sports">⚽ Sports</option>
+            <option value="food">🍜 Food</option>
+            <option value="technology">💻 Technology</option>
+            <option value="architecture">🏛️ Architecture</option>
+            <option value="history">📜 History</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="photoTags" data-i18n="tags">Tags</label>
+          <input type="text" id="photoTags" placeholder="sunrise, mountains, golden-hour…" data-i18n-placeholder="tags_placeholder" />
+          <span class="field-hint" data-i18n="tags_hint">Separate with commas</span>
+        </div>
+        <div class="upload-consent">
+          <input type="checkbox" id="uploadConsent" />
+          <label for="uploadConsent" data-i18n="consent_label">I own this photo and agree to share it publicly on Peczo.c.la</label>
+        </div>
+        <div class="upload-progress" id="uploadProgress" hidden>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <span id="progressLabel" data-i18n="uploading">Uploading…</span>
+        </div>
+        <button class="btn-primary btn-full" id="submitUpload" data-i18n="publish_photo" disabled>Publish Photo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PHOTO DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="photoModal" role="dialog" aria-modal="true" aria-labelledby="photoModalTitle" hidden>
+    <div class="modal-box photo-modal">
+      <button class="modal-close" id="closePhotoBtn" aria-label="Close photo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="photo-modal-grid">
+        <div class="photo-modal-image-wrap">
+          <img id="photoModalImg" src="" alt="" loading="lazy" />
+          <div class="photo-nav">
+            <button class="photo-nav-btn" id="photoPrev" aria-label="Previous photo">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="photo-nav-btn" id="photoNext" aria-label="Next photo">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="photo-modal-info">
+          <h2 id="photoModalTitle" class="photo-modal-title"></h2>
+          <div class="photo-meta">
+            <span class="meta-item"><span id="photoModalCountry"></span></span>
+            <span class="meta-item" id="photoModalCity"></span>
+            <span class="meta-item" id="photoModalDate"></span>
+          </div>
+          <p id="photoModalDesc" class="photo-modal-desc"></p>
+          <div class="photo-tags" id="photoModalTags"></div>
+          <div class="photo-stats">
+            <button class="stat-btn like-btn" id="photoLikeBtn" aria-label="Like this photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              <span id="photoLikeCount">0</span>
+            </button>
+            <span class="stat-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span id="photoViewCount">0</span>
+            </span>
+          </div>
+          <div class="photo-actions">
+            <button class="btn-action" id="photoShareBtn" data-i18n="share">Share</button>
+            <button class="btn-action btn-danger" id="photoReportBtn" data-i18n="report">Report</button>
+          </div>
+          <div class="photo-share-panel" id="sharePanel" hidden>
+            <input type="text" readonly id="shareUrl" class="share-url-input" />
+            <button class="btn-copy" id="copyShareUrl" data-i18n="copy">Copy</button>
+          </div>
+          <div class="comments-section">
+            <h3 data-i18n="comments">Comments</h3>
+            <div class="comment-list" id="commentList"></div>
+            <div class="comment-form">
+              <input type="text" id="commentInput" maxlength="200" data-i18n-placeholder="leave_a_comment" placeholder="Leave a comment…" />
+              <button class="btn-comment" id="submitComment" data-i18n="post">Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REPORT MODAL ===== -->
+  <div class="modal-overlay" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle" hidden>
+    <div class="modal-box report-modal">
+      <button class="modal-close" id="closeReportBtn" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h2 id="reportModalTitle" data-i18n="report_photo">Report Photo</h2>
+      <p data-i18n="report_sub">Help keep Peczo a safe place for everyone.</p>
+      <div class="report-reasons">
+        <label class="report-option"><input type="radio" name="reportReason" value="spam" /> <span data-i18n="report_spam">Spam or advertising</span></label>
+        <label class="report-option"><input type="radio" name="reportReason" value="inappropriate" /> <span data-i18n="report_inappropriate">Inappropriate or offensive</span></label>
+        <label class="report-option"><input type="radio" name="reportReason" value="copyright" /> <span data-i18n="report_copyright">Copyright violation</span></label>
+        <label class="report-option"><input type="radio" name="reportReason" value="violence" /> <span data-i18n="report_violence">Violence or harmful content</span></label>
+        <label class="report-option"><input type="radio" name="reportReason" value="other" /> <span data-i18n="report_other">Other</span></label>
+      </div>
+      <textarea id="reportDetails" rows="3" class="report-details" data-i18n-placeholder="report_details_placeholder" placeholder="Additional details (optional)…" maxlength="500"></textarea>
+      <button class="btn-primary btn-full" id="submitReport" data-i18n="submit_report">Submit Report</button>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="contact" role="contentinfo">
+    <div class="footer-grain"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="footer-logo">
+            <span class="logo-mark">◉</span>
+            <span>Peczo<span class="logo-domain">.c.la</span></span>
+          </a>
+          <p class="footer-tagline" data-i18n="footer_tagline">The World's Open Photo Album</p>
+          <p class="footer-desc" data-i18n="footer_desc">Coub.xyz is an open global photo album where people from all countries can share moments, memories, creativity, and everyday life.</p>
+          <a href="mailto:salatrir@gmail.com" class="footer-email">salatrir@gmail.com</a>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="explore">Explore</h4>
+          <ul>
+            <li><a href="#gallery" data-i18n="latest_photos">Latest Photos</a></li>
+            <li><a href="#trending" data-i18n="trending">Trending</a></li>
+            <li><a href="#categories" data-i18n="categories">Categories</a></li>
+            <li><a href="#map" data-i18n="world_map">World Map</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="categories">Categories</h4>
+          <ul>
+            <li><a href="#" data-category="travel">✈️ Travel</a></li>
+            <li><a href="#" data-category="nature">🌿 Nature</a></li>
+            <li><a href="#" data-category="cities">🏙️ Cities</a></li>
+            <li><a href="#" data-category="art">🎨 Art</a></li>
+            <li><a href="#" data-category="food">🍜 Food</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="support">Support</h4>
+          <ul>
+            <li><a href="mailto:salatrir@gmail.com" data-i18n="contact_us">Contact Us</a></li>
+            <li><a href="#" id="footerUploadLink" data-i18n="upload_photo">Upload Photo</a></li>
+            <li><a href="#" data-i18n="privacy">Privacy Policy</a></li>
+            <li><a href="#" data-i18n="terms">Terms of Use</a></li>
+            <li><a href="#" data-i18n="moderation">Moderation</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="copyright">© 2025 Peczo.c.la · Coub.xyz · All photos belong to their uploaders</span>
+        <div class="footer-langs">
+          <button data-lang="en">EN</button>
+          <button data-lang="ar">عر</button>
+          <button data-lang="fr">FR</button>
+          <button data-lang="es">ES</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating upload button (mobile) -->
+  <button class="fab-upload" id="fabUpload" aria-label="Upload a photo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="moderation.js"></script>
+  <script src="upload.js"></script>
+  <script src="gallery.js"></script>
+  <script src="search.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
